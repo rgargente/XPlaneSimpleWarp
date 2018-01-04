@@ -208,7 +208,7 @@ class PythonInterface:
         x, y, w, h = int(outW[0]) - WINDOW_W - MARGIN_W, int(outH[0]) - MARGIN_H, WINDOW_W, WINDOW_H
 
         x2 = x + w
-        y2 = y - 135
+        y2 = y - 155
         hhh, spx, spy, spt = 20, 15, 20, 5
         ww1, ww2, ww3, ww4, ww5, ww6 , ww7= 10, 85, 30, 40, 60, 65, 30
         xx1 = x+5
@@ -258,15 +258,15 @@ class PythonInterface:
         yyi -= spy
 
         self.WrpUse = XPCreateWidget(xx1+30, yyi, xx1+40 , yyi-hhh, 1, ""                 , 0, self.SWWindow, xpWidgetClass_Button)
-        self.WrpLb6 = XPCreateWidget(xx1+45, yyi, xx1+250, yyi-hhh, 1, "Use fuel during warp", 0, self.SWWindow, xpWidgetClass_Caption)
+        self.WrpLb6 = XPCreateWidget(xx1+45, yyi, xx1+250, yyi-hhh, 1, "Update fuel and time after warp", 0, self.SWWindow, xpWidgetClass_Caption)
         XPSetWidgetProperty(self.WrpUse, xpProperty_ButtonType    , xpRadioButton)
         XPSetWidgetProperty(self.WrpUse, xpProperty_ButtonBehavior, xpButtonBehaviorCheckBox)
         XPSetWidgetProperty(self.WrpUse, xpProperty_ButtonState   , self.warp_Use)
         XPSetWidgetProperty(self.WrpUse, xpProperty_Enabled, 1)
-        #yyi -= spy
+        yyi -= spy
 
-        self.Pref1Btn = XPCreateWidget(xx1+200, yyi, xx1+210, yyi-hhh, 1, ""                  , 0, self.SWWindow, xpWidgetClass_Button)
-        self.Pref1Lbl = XPCreateWidget(xx1+215, yyi, xx1+340, yyi-hhh, 1, "Translucent window", 0, self.SWWindow, xpWidgetClass_Caption)
+        self.Pref1Btn = XPCreateWidget(xx1+30, yyi, xx1+40, yyi-hhh, 1, ""                  , 0, self.SWWindow, xpWidgetClass_Button)
+        self.Pref1Lbl = XPCreateWidget(xx1+45, yyi, xx1+250, yyi-hhh, 1, "Translucent window", 0, self.SWWindow, xpWidgetClass_Caption)
         XPSetWidgetProperty(self.Pref1Btn, xpProperty_ButtonType    , xpRadioButton)
         XPSetWidgetProperty(self.Pref1Btn, xpProperty_ButtonBehavior, xpButtonBehaviorCheckBox)
         XPSetWidgetProperty(self.Pref1Btn, xpProperty_ButtonState   , self.Translucent)
@@ -583,6 +583,11 @@ class PythonInterface:
             # Update tanks with new values
             self.DebugPrint("Tanks after: {}".format(tanks))
             XPLMSetDatavf(dr_tanks, tanks, 0, num_tanks)
+			
+			# Advance time
+            dr_zulu_time_sec = XPLMFindDataRef("sim/time/zulu_time_sec")
+            zulu_time_sec = XPLMGetDataf(dr_zulu_time_sec)
+            XPLMSetDataf(dr_zulu_time_sec, zulu_time_sec + time_saved)
 
         # Do it!
         XPLMSetDatad(drx, wpt_x)
